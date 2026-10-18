@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="{{ settings.html_language }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>{% if album.breadcrumb %}{{ album.title|striptags }} - {% endif %}{{ settings.title }}</title>
+    <meta name="description" content="{{ album.description|striptags }}">
+    <meta name="author" content="{{ album.author }}">
+    <meta name="viewport" content="width=device-width">
+    {% include 'default_head.html' %}
+
+{% if album.medias %}
+    <link rel="stylesheet" href="{{ theme.url }}/photoswipe.css">
+    <script type="module">
+    import PhotoSwipeLightbox from '{{ theme.url }}/photoswipe-lightbox.esm.min.js';
+    import PhotoSwipe from '{{ theme.url }}/photoswipe.esm.min.js';
+    import PhotoSwipeDynamicCaption from '{{ theme.url }}/photoswipe-dynamic-caption-plugin.esm.min.js';
+    import PhotoSwipeFullscreen from '{{ theme.url }}/photoswipe-fullscreen.esm.min.js';
+    import PhotoSwipeVideoPlugin from '{{ theme.url }}/photoswipe-video-plugin.esm.min.js';
+
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: '.gallery',
+      children: '.thumbnail',
+      pswpModule: PhotoSwipe,
+      bgOpacity: 0.95,
+      closeTitle: 'Fermer',
+      zoomTitle: 'Zoom',
+      arrowPrevTitle: 'Précédente',
+      arrowNextTitle: 'Suivante',
+      errorMsg: "L'image n'a pas pu être chargée."
+    });
+    const captionPlugin = new PhotoSwipeDynamicCaption(lightbox, {type: 'auto'});
+    const fullscreenPlugin = new PhotoSwipeFullscreen(lightbox);
+    const videoPlugin = new PhotoSwipeVideoPlugin(lightbox, {autoplay: true});
+
+    lightbox.init();
+    </script>
+{% endif %}
+
+    {% block extra_head %}{% endblock extra_head %}
+    <link rel="stylesheet" href="{{ theme.url }}/styles.css">
+    {% if user_css %}
+    <link rel="stylesheet" href="{{ theme.url }}/{{ user_css }}">
+    {% endif %}
+  </head>
+  <body>
+    <div class="container">
+      <header class="site-header">
+        <a class="site-title" href="{{ album.index_url }}">{{ index_title }}</a>
+      </header>
+
+      <main class="content">
+        {% if album.breadcrumb %}
+          <h1 class="album-title">{{ album.title }}</h1>
+          {% if album.description %}
+            <p class="album-description">{{ album.description }}</p>
+          {% endif %}
+          <a class="back-link" href="{{ album.index_url }}">← Toutes les bibliothèques</a>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>

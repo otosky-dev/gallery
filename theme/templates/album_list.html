@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="album-list">
+  {% for alb in album.albums %}
+    <a class="album-card" href="{{ alb.url }}">
+      <img src="{{ alb.thumbnail }}" alt="{{ alb.title }}" loading="lazy" />
+      <span class="album-card__title">{{ alb.title }}</span>
+      <span class="album-card__meta">
+        {%- if alb.description %}{{ alb.description|striptags|trim('.') }} · {% endif -%}
+        {{ alb.medias|length }} photos
+      </span>
+    </a>
+  {% endfor %}
+  </div>
+
+  {% if album.medias %}
+    {% include "album_items.html" %}
+  {% endif %}
+{% endblock %}

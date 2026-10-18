@@ -1,0 +1,221 @@
+:root {
+  --bg: #f4f2ee;
+  --surface: #ffffff;
+  --text: #22252a;
+  --muted: #6b6f76;
+  --accent: #2f5d8a;
+  --radius: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181b;
+    --surface: #202328;
+    --text: #e8e6e1;
+    --muted: #a0a4ab;
+    --accent: #8ab4e0;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); }
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+.site-header {
+  padding: 32px 0 24px;
+  text-align: center;
+}
+
+.site-title {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.album-title {
+  margin: 0 0 4px;
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 600;
+}
+
+.album-description {
+  margin: 0 0 8px;
+  color: var(--muted);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 24px;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+/* Liste des bibliothèques */
+
+.album-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.album-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.album-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.album-card img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+}
+
+.album-card__title {
+  padding: 12px 14px 0;
+  font-weight: 600;
+  font-size: 19px;
+}
+
+.album-card__meta {
+  padding: 2px 14px 14px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Grille des photos */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.thumbnail { margin: 0; }
+
+.thumbnail a {
+  position: relative;
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.thumbnail img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* Légende au survol */
+
+.hover-caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 28px 12px 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.78));
+  color: #fff;
+  font-size: 14px;
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.hover-caption strong { display: block; font-size: 15px; }
+.hover-caption span { display: block; opacity: 0.85; }
+
+.thumbnail a:hover .hover-caption,
+.thumbnail a:focus-visible .hover-caption {
+  opacity: 1;
+  transform: none;
+}
+
+.thumbnail a:hover img { transform: scale(1.03); }
+
+/* Sur écran tactile (pas de survol), la légende reste visible. */
+@media (hover: none) {
+  .hover-caption { opacity: 1; transform: none; }
+}
+
+/* Légende dans la visionneuse : contenu caché sur la page. */
+.pswp-caption-content { display: none; }
+
+.pswp__dynamic-caption {
+  color: #fff;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  transition: opacity 120ms linear !important;
+}
+
+.pswp__dynamic-caption strong { font-size: 18px; }
+
+.pswp__dynamic-caption--faded { opacity: 0 !important; }
+
+/* À côté de la photo quand il y a la place */
+.pswp__dynamic-caption--aside {
+  width: auto;
+  max-width: 320px;
+  padding: 20px 15px 20px 20px;
+  margin-top: 70px;
+}
+
+/* Sous la photo */
+.pswp__dynamic-caption--below {
+  width: auto;
+  max-width: 700px;
+  padding: 15px 0 0;
+}
+
+.pswp__dynamic-caption--on-hor-edge {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Sur mobile : bandeau en bas de l'écran */
+.pswp__dynamic-caption--mobile {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px 15px;
+  right: 0;
+  bottom: 0;
+  top: auto !important;
+  left: 0 !important;
+}
+
+.pswp { --pswp-bg: #0d0e10; }

@@ -1,0 +1,30 @@
+  <div class="gallery">
+    {% for media in album.medias %}
+      {% if media.thumbnail %}
+        <figure class="thumbnail">
+          <a href="{{ media.url }}"
+          {% if media.type == "image" %}
+             data-pswp-width="{{ media.size.width }}"
+             data-pswp-height="{{ media.size.height }}"
+          {% elif media.type == "video" %}
+             data-pswp-type="video"
+             data-pswp-width="800"
+             data-pswp-height="600"
+          {% endif %}
+          >
+            <img src="{{ media.thumbnail }}" alt="{{ media.title }}" loading="lazy" />
+            {# Légende affichée au survol de la miniature #}
+            <figcaption class="hover-caption">
+              <strong>{{ media.title }}</strong>
+              {% if media.description %}<span>{{ media.description }}</span>{% endif %}
+            </figcaption>
+          </a>
+          {# Légende affichée sous la photo agrandie (PhotoSwipe) #}
+          <div class="pswp-caption-content">
+            <strong>{{ media.title }}</strong>
+            {% if media.description %}<br>{{ media.description }}{% endif %}
+          </div>
+        </figure>
+      {% endif %}
+    {% endfor %}
+  </div>
