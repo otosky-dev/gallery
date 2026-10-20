@@ -4,6 +4,9 @@ Chaque dossier d'album peut contenir un fichier ``selection_galerie.md`` avec :
 
 - un titre ``# Nom de l'album — ...`` (la partie avant le tiret long devient
   le titre de l'album) ;
+- facultatif, juste sous le titre : ``Ordre : 1`` (position de l'album sur
+  l'accueil) et ``Légende : 30 août 2026`` (petite ligne affichée sous le
+  titre de l'album, par exemple les dates de prise de vue) ;
 - un paragraphe d'introduction (sa première phrase devient la description) ;
 - un ou plusieurs tableaux ``| # | Fichier | ... |``. La colonne qui suit
   ``Fichier`` donne le titre de la photo ; la suivante, s'il y en a une, sa
@@ -23,6 +26,7 @@ SELECTION_FILE = "selection_galerie.md"
 CODE_RE = re.compile(r"P\d{7}")
 EDITOR_NOTE_RE = re.compile(r"\s*\*\([^)]*\)\*")
 POSITION_NOTE_RE = re.compile(r"\s+—\s+(ouverture|fin)$", re.IGNORECASE)
+ALBUM_META_RE = re.compile(r"^(Ordre|Légende)\s*:\s*(.+)$", re.IGNORECASE)
 
 
 def _clean(text):
@@ -32,6 +36,7 @@ def _clean(text):
 
 def parse_selection(path):
     title = intro = section = header = None
+    album_meta = {}
     photos = []
     with open(path, encoding="utf-8") as f:
         for line in f:
@@ -58,12 +63,15 @@ def parse_selection(path):
                         })
             else:
                 header = None
-                if line and title and intro is None and section is None:
+                meta = ALBUM_META_RE.match(line)
+                if meta and section is None and intro is None:
+                    album_meta[meta.group(1).lower()] = meta.group(2).strip()
+                elif line and title and intro is None and section is None:
                     intro = line
 
     album_title = re.split(r"\s+—\s+", title)[0] if title else None
     album_description = intro.split(". ")[0].rstrip(".") + "." if intro else None
-    return album_title, album_description, photos
+    return album_title, album_description, album_meta, photos
 
 
 def _media_code(media):
@@ -72,10 +80,20 @@ def _media_code(media):
 
 
 def album_initialized(album):
+    # Lu par albums_sort_attr = "album_order" (sigal.conf.py) : les albums
+    # sans « Ordre » passent après les autres, par nom.
+    album.album_order = "9999 " + album.name
+    album.legend = ""
+
     path = os.path.join(album.src_path, SELECTION_FILE)
     if not os.path.isfile(path):
         return
-    album_title, album_description, photos = parse_selection(path)
+    album_title, album_description, album_meta, photos = parse_selection(path)
+
+    order = album_meta.get("ordre", "")
+    if order.isdigit():
+        album.album_order = f"{int(order):04d}"
+    album.legend = album_meta.get("légende", "")
 
     if not os.path.isfile(album.markdown_metadata_filepath):
         if album_title:

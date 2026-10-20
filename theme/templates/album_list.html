@@ -6,8 +6,9 @@
     <a class="album-card" href="{{ alb.url }}">
       <img src="{{ alb.thumbnail }}" alt="{{ alb.title }}" loading="lazy" />
       <span class="album-card__title">{{ alb.title }}</span>
+      {% if alb.legend %}<span class="album-card__legend">{{ alb.legend }}</span>{% endif %}
       <span class="album-card__meta">
-        {%- if alb.description %}{{ alb.description|striptags|trim('.') }} · {% endif -%}
+        {%- if alb.description and not alb.legend %}{{ alb.description|striptags|trim('.') }} · {% endif -%}
         {{ alb.medias|length }} photos
       </span>
     </a>

@@ -57,6 +57,14 @@ a { color: var(--accent); }
   font-weight: 600;
 }
 
+.album-legend {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 .album-description {
   margin: 0 0 8px;
   color: var(--muted);
@@ -105,6 +113,13 @@ a { color: var(--accent); }
   padding: 12px 14px 0;
   font-weight: 600;
   font-size: 19px;
+}
+
+.album-card__legend {
+  padding: 2px 14px 0;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .album-card__meta {

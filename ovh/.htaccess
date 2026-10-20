@@ -1,0 +1,8 @@
+# Hébergement OVH (dossier "www") : redirige la racine thibault-gauthier.fr
+# vers la galerie servie par Cloudflare Pages sur www.
+RewriteEngine On
+
+# Laisse passer la validation Let's Encrypt du certificat de la racine.
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+
+RewriteRule ^ https://www.thibault-gauthier.fr%{REQUEST_URI} [R=301,L]

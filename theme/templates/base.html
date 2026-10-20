@@ -53,7 +53,10 @@
       <main class="content">
         {% if album.breadcrumb %}
           <h1 class="album-title">{{ album.title }}</h1>
-          {% if album.description %}
+          {% if album.legend %}
+            <p class="album-legend">{{ album.legend }}</p>
+          {% endif %}
+          {% if album.description and album.description|trim('.') != album.legend %}
             <p class="album-description">{{ album.description }}</p>
           {% endif %}
           <a class="back-link" href="{{ album.index_url }}">← Toutes les bibliothèques</a>

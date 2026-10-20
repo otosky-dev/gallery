@@ -55,6 +55,8 @@ Le plugin `selection_captions` lit `selection_galerie.md` dans chaque album :
 | Élément du .md | Devient |
 |---|---|
 | `# Nom — sélection pour la galerie` | Titre de l'album (partie avant « — ») |
+| `Ordre : 1` (sous le titre, facultatif) | Position de l'album sur l'accueil |
+| `Légende : 30 août 2026` (sous le titre, facultatif) | Ligne affichée sous le titre de l'album |
 | Première phrase du paragraphe d'intro | Description de l'album |
 | Colonne après `Fichier` | Titre de la photo |
 | Colonne suivante, sinon le titre `## …` du tableau | Description de la photo |
@@ -74,12 +76,27 @@ Title: Citroën 2CV jaune
 Une touche de couleur joyeuse.
 ```
 
-## Mise en ligne (plus tard)
+## Mise en ligne (Cloudflare Pages)
 
-Prévu : Cloudflare Pages, gratuit, sur un sous-domaine OVH.
+Le dépôt Git ne contient que ce dossier `src` : les photos et le site généré
+sont en dehors, ils ne peuvent donc pas y entrer. Le site est envoyé depuis le
+poste avec Wrangler (« Direct Upload »), Cloudflare ne construit rien lui-même.
+
+Prérequis : Node.js LTS installé et un compte Cloudflare (offre gratuite).
+
+Première fois :
 
 ```powershell
-npx wrangler pages deploy ..\..\gallery_site --project-name galerie
+npx wrangler login
+npx wrangler pages project create galerie --production-branch main
 ```
 
-Puis, côté OVH, un enregistrement CNAME `photos` → `galerie.pages.dev`.
+À chaque mise à jour (génère puis publie) :
+
+```powershell
+.\deploy.cmd
+```
+
+Domaine : dans Cloudflare, Workers & Pages > galerie > Custom domains, ajouter
+`photos.<ton-domaine>`, puis chez OVH, zone DNS : enregistrement CNAME
+`photos` → `<projet>.pages.dev` (l'adresse affichée par Wrangler).

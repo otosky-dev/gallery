@@ -30,8 +30,9 @@ thumb_size = (480, 320)
 thumb_fit = True
 jpg_options = {"quality": 85, "optimize": True, "progressive": True}
 
-# Ordre : albums par nom, photos selon selection_galerie.md (voir plugin).
-albums_sort_attr = "name"
+# Ordre des albums (« Ordre : n » dans selection_galerie.md) et des photos
+# (ordre des tableaux), fixés par le plugin.
+albums_sort_attr = "album_order"
 medias_sort_attr = "filename"
 
 # Plugin maison : légendes, titres et ordre lus dans selection_galerie.md.
